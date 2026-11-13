@@ -1,26 +1,33 @@
 --[[
 	uiLib · example
 
-	    loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/main/Example.lua"))()
+	    loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/claude/compassionate-gauss-r2p7dj/Example.lua"))()
 
 	Builds a small demo hub that shows every component of the library.
 	Nothing here touches the game: every callback only prints or notifies.
 ]]
 
 -- In your own script this is a single line:
---     local Library = loadstring(game:HttpGet(".../uiLib/main/Library.lua"))()
--- The demo also looks on the development branch so it works before a merge.
+--     local Library = loadstring(game:HttpGet(URL_TO .. "Library.lua"))()
+-- The demo tries both branches and reports exactly what went wrong if neither works.
 local function import(file)
-	for _, branch in ipairs({ "main", "claude/compassionate-gauss-r2p7dj" }) do
-		local ok, source = pcall(function()
-			return game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/" .. branch .. "/" .. file)
-		end)
-		local chunk = ok and type(source) == "string" and loadstring(source)
-		if chunk then
+	local problems = {}
+	for _, branch in ipairs({ "claude/compassionate-gauss-r2p7dj", "main" }) do
+		local url = "https://raw.githubusercontent.com/LyherScript/uiLib/" .. branch .. "/" .. file
+		local ok, result = pcall(function()
+			local source = game:HttpGet(url)
+			local chunk, syntaxError = loadstring(source)
+			if not chunk then
+				error(tostring(syntaxError or "the download is not Lua code"), 0)
+			end
 			return chunk()
+		end)
+		if ok and type(result) == "table" then
+			return result
 		end
+		table.insert(problems, branch .. ": " .. tostring(result))
 	end
-	error("uiLib: could not download " .. file)
+	error("[uiLib] could not load " .. file .. " -> " .. table.concat(problems, " | "), 0)
 end
 
 local Library = import("Library.lua")

@@ -14,7 +14,7 @@ A dock + floating-window interface library for Roblox, written in Luau.
 ## Try it
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/main/Example.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/claude/compassionate-gauss-r2p7dj/Example.lua"))()
 ```
 
 `Example.lua` builds a demo that shows every component. Press **K** to hide or show it.
@@ -22,7 +22,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/mai
 ## Quick start
 
 ```lua
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/main/Library.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/LyherScript/uiLib/claude/compassionate-gauss-r2p7dj/Library.lua"))()
 
 local UI = Library:Create({
     Name = "My Hub",
